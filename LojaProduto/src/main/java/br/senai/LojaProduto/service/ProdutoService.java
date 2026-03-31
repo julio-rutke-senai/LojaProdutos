@@ -1,5 +1,6 @@
 package br.senai.LojaProduto.service;
 
+import br.senai.LojaProduto.dao.ProdutoDAO;
 import br.senai.LojaProduto.model.Produto;
 import org.springframework.stereotype.Service;
 
@@ -10,37 +11,36 @@ import java.util.Optional;
 @Service
 public class ProdutoService {
 
-    private List<Produto> produtos = new ArrayList<>();
+    private final ProdutoDAO produtoDAO;
+
+    public ProdutoService(ProdutoDAO produtoDAO) {
+        this.produtoDAO = produtoDAO;
+    }
 
     public Produto cadastrarProduto(Produto produto){
-        produtos.add(produto);
+        produtoDAO.salvar(produto);
         return produto;
     }
 
     public List<Produto> buscarProdutos(){
+        List<Produto> produtos = produtoDAO.listarTodos();
         return produtos;
     }
 
     public Optional<Produto> buscarProdutoPorCodigo(Long codigo){
-        return produtos.stream()
-                .filter(p -> p.getCodigo().equals(codigo))
-                .findFirst();
+        Produto produto = produtoDAO.buscarPorCodigo(codigo);
+        return Optional.ofNullable(produto);
     }
 
-    public Optional<Produto> alterarProduto(Long codigo, Produto produtoAtualizado){
-        for (Produto produto : produtos) {
-            if (produto.getCodigo().equals(codigo)) {
-                produto.setDescricao(produtoAtualizado.getDescricao());
-                produto.setPreco(produtoAtualizado.getPreco());
-                return Optional.ofNullable(produto);
-            }
-        }
-
-        return Optional.empty();
+    public Optional<Produto> alterarProduto(Long codigo, Produto produto){
+        produto.setCodigo(codigo);
+        produtoDAO.atualizar(produto);
+        return Optional.of(produto);
     }
 
     public boolean excluirProduto(Long codigo){
-        return produtos.removeIf(p -> p.getCodigo().equals(codigo));
+        produtoDAO.excluir(codigo);
+        return true;
     }
 
 }

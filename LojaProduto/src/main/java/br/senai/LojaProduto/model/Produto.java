@@ -1,7 +1,12 @@
 package br.senai.LojaProduto.model;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Produto {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long codigo;
   private String descricao;
   private Double preco;
