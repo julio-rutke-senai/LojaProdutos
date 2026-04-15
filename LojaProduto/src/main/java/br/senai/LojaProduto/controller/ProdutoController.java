@@ -1,5 +1,7 @@
 package br.senai.LojaProduto.controller;
 
+import br.senai.LojaProduto.model.DescricaoProdutoResponseDTO;
+import br.senai.LojaProduto.model.NovoProdutoRequestDTO;
 import br.senai.LojaProduto.model.Produto;
 import br.senai.LojaProduto.service.ProdutoService;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,10 @@ public class ProdutoController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<?> cadastrar(@RequestBody Produto produto) {
+  public ResponseEntity<?> cadastrar(@RequestBody NovoProdutoRequestDTO produtoDto) {
     try {
-      produto = produtoService.cadastrarProduto(produto);
-      return ResponseEntity.status(HttpStatus.CREATED).body(produto);
+      Produto produto = produtoService.cadastrarProduto(produtoDto);
+      return ResponseEntity.status(HttpStatus.CREATED).body(produto.getCodigo());
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body("Erro ao cadastrar produto: " + e.getMessage());
@@ -88,4 +90,16 @@ public class ProdutoController {
               .body("Erro ao excluir produto: " + e.getMessage());
     }
   }
+  
+  @GetMapping("/descricao")
+  public ResponseEntity<?> buscarProdutoCategoria(){
+      try {
+      List<DescricaoProdutoResponseDTO> produtos = produtoService.buscarDescricao();
+      return ResponseEntity.ok(produtos);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("Erro ao listar produtos: " + e.getMessage());
+    }
+  }
+  
 }

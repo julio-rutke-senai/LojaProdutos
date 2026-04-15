@@ -11,6 +11,9 @@ public class Produto {
   private String descricao;
   private Double preco;
   private String status;
+  @ManyToOne
+  @JoinColumn(name = "categoria_id")
+  private Categoria categoria;
 
   public Produto() {
   }
@@ -53,4 +56,14 @@ public class Produto {
   public void setStatus(String status) {
     this.status = status;
   }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+  
+  
 }

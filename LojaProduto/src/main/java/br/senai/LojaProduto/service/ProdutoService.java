@@ -1,7 +1,10 @@
 package br.senai.LojaProduto.service;
 
 import br.senai.LojaProduto.dao.ProdutoDAO;
+import br.senai.LojaProduto.model.NovoProdutoRequestDTO;
 import br.senai.LojaProduto.model.Produto;
+import br.senai.LojaProduto.model.Categoria;
+import br.senai.LojaProduto.model.DescricaoProdutoResponseDTO;
 import br.senai.LojaProduto.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +17,25 @@ public class ProdutoService {
 
 //    private final ProdutoDAO produtoDAO;
     private final ProdutoRepository produtoRepository;
+    private final CategoriaService categoriaService;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
+    public ProdutoService(ProdutoRepository produtoRepository, CategoriaService categoriaService) {
         this.produtoRepository = produtoRepository;
+        this.categoriaService = categoriaService;
     }
 
-    public Produto cadastrarProduto(Produto produto){
+    public Produto cadastrarProduto(NovoProdutoRequestDTO produtoDto){
 //        produtoDAO.salvar(produto);
-        produtoRepository.save(produto);
+
+        Produto produto = new Produto();
+        produto.setDescricao(produtoDto.getDescricao());
+        produto.setPreco(produtoDto.getPreco());
+        produto.setStatus(produtoDto.getStatus());
+        
+        Categoria categoria = categoriaService.buscarPorCodigo(produtoDto.getCategoria());
+        produto.setCategoria(categoria);
+
+        produto = produtoRepository.save(produto);
         return produto;
     }
 
@@ -48,6 +62,10 @@ public class ProdutoService {
 //        produtoDAO.excluir(codigo);
         produtoRepository.deleteById(codigo);
         return true;
+    }
+    
+    public List<DescricaoProdutoResponseDTO> buscarDescricao(){
+        return produtoRepository.buscarDescricaoProduto();
     }
 
 }
