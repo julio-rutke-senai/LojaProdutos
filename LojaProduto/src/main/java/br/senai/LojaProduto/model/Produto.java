@@ -14,6 +14,7 @@ public class Produto {
   @ManyToOne
   @JoinColumn(name = "categoria_id")
   private Categoria categoria;
+  private String cor;
 
   public Produto() {
   }
@@ -64,6 +65,12 @@ public class Produto {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-  
-  
+
+  public String getCor() {
+    return cor;
+  }
+
+  public void setCor(String cor) {
+    this.cor = cor;
+  }
 }
