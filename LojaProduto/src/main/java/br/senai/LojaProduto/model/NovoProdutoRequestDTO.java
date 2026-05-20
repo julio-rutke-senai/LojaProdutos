@@ -7,6 +7,8 @@ public class NovoProdutoRequestDTO {
     private Double preco;
     private String status;
     private Long categoria;
+    private String username;
+    private String senha;
 
     public String getDescricao() {
         return descricao;
@@ -39,7 +41,20 @@ public class NovoProdutoRequestDTO {
     public void setCategoria(Long categoria) {
         this.categoria = categoria;
     }
-    
-    
-    
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 }

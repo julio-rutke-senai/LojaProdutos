@@ -1,6 +1,7 @@
 
 package br.senai.LojaProduto.controller;
 
+import br.senai.LojaProduto.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
+    private final UsuarioService usuarioService;
     
-    public CategoriaController(br.senai.LojaProduto.service.CategoriaService categoriaService) {
+    public CategoriaController(br.senai.LojaProduto.service.CategoriaService categoriaService, UsuarioService usuarioService) {
         this.categoriaService = categoriaService;
+        this.usuarioService = usuarioService;
     }
     
     @PostMapping("/add")
