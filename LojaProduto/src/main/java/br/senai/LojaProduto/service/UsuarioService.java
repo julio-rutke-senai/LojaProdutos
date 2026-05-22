@@ -3,6 +3,7 @@ package br.senai.LojaProduto.service;
 import br.senai.LojaProduto.model.AutenticacaoDTO;
 import br.senai.LojaProduto.model.Usuario;
 import br.senai.LojaProduto.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +14,16 @@ import java.util.UUID;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Usuario save(Usuario usuario){
+        String encode = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(encode);
         return usuarioRepository.save(usuario);
     }
 
